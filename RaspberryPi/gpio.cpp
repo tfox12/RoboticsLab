@@ -75,7 +75,7 @@ namespace RaspberryPi
            PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
            MAP_SHARED,       //Shared with other processes
            mem_fd,           //File to map
-           0x40200000         //Offset to GPIO peripheral
+           0x20200000         //Offset to GPIO peripheral
         );
  
         close(mem_fd); //No need to keep mem_fd open after mmap
