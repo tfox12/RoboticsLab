@@ -14,8 +14,8 @@ namespace RaspberryPi
     private:
 
         static volatile unsigned * uart_base;
-
         static volatile unsigned * setup_uart_pointer();
+
         void setup_uart_gpio();
         void setup_uart_registers();
         

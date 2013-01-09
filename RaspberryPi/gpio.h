@@ -33,7 +33,8 @@ namespace RaspberryPi
         public:
             static GpioInterface * instance();
         private:
-            GpioInterface();
+            GpioInterface() {}
+            static volatile unsigned * setup_gpio_pointer();
             static GpioInterface * INSTANCE;
             static volatile unsigned * gpio_base;
     };

@@ -57,7 +57,7 @@ namespace RaspberryPi
         *(gi->gpio_base + clear_offset + pin_number / 32) = 1 << (pin_number % 32); 
     }
 
-    GpioInterface::GpioInterface()
+    volatile unsigned * GpioInterface::setup_gpio_pointer()
     {
         int mem_fd;
 
@@ -72,7 +72,7 @@ namespace RaspberryPi
         char * gpio_map = (char *) mmap(
            NULL,             //Any adddress in our space will do
            4 * 1024,       //Map length
-           PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
+           PROT_READ | PROT_WRITE,// Enable reading & writting to mapped memory
            MAP_SHARED,       //Shared with other processes
            mem_fd,           //File to map
            0x20200000         //Offset to GPIO peripheral
@@ -86,9 +86,11 @@ namespace RaspberryPi
         }
  
         // Always use volatile pointer!
-        gpio_base = (volatile unsigned *)gpio_map;
+        return (volatile unsigned *)gpio_map;
  
     }
+
+    volatile unsigned * GpioInterface::gpio_base = setup_gpio_pointer();
 
     GpioInterface * GpioInterface::INSTANCE = new GpioInterface;
 
