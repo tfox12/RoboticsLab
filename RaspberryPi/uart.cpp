@@ -52,11 +52,11 @@ namespace RaspberryPi
     void Uart::setup_uart_registers()
     {
         unsigned int
-          * interrupt_clear_register    = (unsigned int *)(uart_base + 0x44),
-          * int_baudrate_register       = (unsigned int *)(uart_base + 0x24),
-          * frac_baudrate_register      = (unsigned int *)(uart_base + 0x28),
-          * line_control_register       = (unsigned int *)(uart_base + 0x2c),
-          * control_register            = (unsigned int *)(uart_base + 0x30);
+          * interrupt_clear_register    = (unsigned int *)(uart_base + 0x11),
+          * int_baudrate_register       = (unsigned int *)(uart_base + 0x09),
+          * frac_baudrate_register      = (unsigned int *)(uart_base + 0x0A),
+          * line_control_register       = (unsigned int *)(uart_base + 0x0B),
+          * control_register            = (unsigned int *)(uart_base + 0x0C);
 
         *(interrupt_clear_register)     = 0x7FF;
         *(int_baudrate_register)        = 1;
@@ -67,7 +67,7 @@ namespace RaspberryPi
 
     Uart::Uart()
     {
-        unsigned int * control_register = (unsigned int *)(uart_base + 0x30);
+        unsigned int * control_register = (unsigned int *)(uart_base + 0xC);
         *(control_register) = 0;
 
         setup_uart_gpio();
@@ -78,7 +78,7 @@ namespace RaspberryPi
     {
         int transmit_full = 0x20;
         unsigned int
-          * flag_register = (unsigned int *)(uart_base + 0x18),
+          * flag_register = (unsigned int *)(uart_base + 0x6),
           * data_register = (unsigned int *)(uart_base + 0x0);
 
         while(*flag_register & transmit_full);
@@ -90,7 +90,7 @@ namespace RaspberryPi
     {
         int receive_empty = 0x10;
         unsigned int
-          * flag_register = (unsigned int *)(uart_base + 0x18),
+          * flag_register = (unsigned int *)(uart_base + 0x6),
           * data_register = (unsigned int *)(uart_base + 0x0);
         
         while(*flag_register & receive_empty);

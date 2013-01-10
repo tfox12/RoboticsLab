@@ -19,7 +19,7 @@ namespace RaspberryPi
          * 10 gpio pins. So the word offset for the current pin is the
          * pin number divided by 10, using int division
          */
-        volatile unsigned * word_offset = gi->gpio_base + pin_number * 4 / 10;
+        volatile unsigned * word_offset = gi->gpio_base + pin_number / 10;
         
         /*
          * Each pin gets 3 bits for its function id
@@ -27,15 +27,15 @@ namespace RaspberryPi
          * the 3 bits, followed by 'or'ing the new function
          * bits into its place
          */ 
-        *word_offset &= ~(7<<(pin_number%10));
-        *word_offset |= (alt<<(pin_number%10));
+        *word_offset &= ~(7<<((pin_number%10)*3));
+        *word_offset |= (alt<<((pin_number%10)*3));
     }
 
     // sets the pin as high
     void Gpio::set()
     {
         GpioInterface * gi = GpioInterface::instance();
-        int set_offset = 0x1c;
+        int set_offset = 0x07;
         
         /*
          * Each pin gets 1 bit, so we just shift a 1 by
@@ -48,7 +48,7 @@ namespace RaspberryPi
     void Gpio::clear()
     {
         GpioInterface * gi = GpioInterface::instance();
-        int clear_offset = 0x28;
+        int clear_offset = 0x0A;
         
         /*
          * Each pin gets 1 bit, so we just shift a 1 by
